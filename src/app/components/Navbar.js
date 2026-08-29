@@ -2,9 +2,12 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useCart } from '../store/useCart';
 
 export default function Navbar() {
   const pathname = usePathname();
+  const { cart, openCart } = useCart();
+  const itemCount = cart.reduce((total, item) => total + item.quantity, 0);
 
   const navItems = [
     { name: 'Store', path: '/' },
@@ -47,12 +50,18 @@ export default function Navbar() {
           })}
         </nav>
         
-        <button type="button" className="bg-transparent border-none p-2 cursor-pointer text-white/70 hover:text-white transition-colors" aria-label="Search">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="11" cy="11" r="8"></circle>
-            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-          </svg>
-        </button>
+        <div className="flex items-center gap-4">
+          <button 
+            onClick={openCart}
+            type="button" 
+            className="bg-[#14213d] border border-white/20 text-white px-3 py-1.5 text-xs font-mono flex items-center gap-2 hover:border-white transition-colors cursor-pointer"
+          >
+            <span>BAG</span>
+            <span className="bg-white text-black px-1.5 py-0.2 text-[10px] font-bold">
+              {itemCount}
+            </span>
+          </button>
+        </div>
       </div>
     </header>
   );
